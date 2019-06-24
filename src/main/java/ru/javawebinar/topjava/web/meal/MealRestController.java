@@ -8,6 +8,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.time.LocalDate;
@@ -37,7 +38,7 @@ public class MealRestController {
     public List<MealTo> getAll() {
         int userId = SecurityUtil.authUserId();
         log.info("getAll for user {}", userId);
-        return MealsUtil.getFilteredWithExcess(service.getAll(userId), SecurityUtil.authUserCaloriesPerDay(), LocalTime.MAX, LocalTime.MIN);
+        return MealsUtil.getWithExcess(service.getAll(userId), SecurityUtil.authUserCaloriesPerDay());
     }
 
     public void deleteAll() {
@@ -46,8 +47,9 @@ public class MealRestController {
         service.deleteAll(userId);
     }
 
-    public Meal update(Meal meal) {
+    public Meal update(Meal meal, int id) {
         int userId = SecurityUtil.authUserId();
+        ValidationUtil.assureIdConsistent(meal, id);
         log.info("update {} for user {}", meal, userId);
         return service.update(meal, userId);
     }

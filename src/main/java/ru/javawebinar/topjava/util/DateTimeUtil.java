@@ -1,5 +1,8 @@
 package ru.javawebinar.topjava.util;
 
+import org.springframework.lang.Nullable;
+import org.springframework.util.StringUtils;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,6 +17,14 @@ public class DateTimeUtil {
 
     public static boolean isBetween(LocalDateTime ldt, LocalDateTime startTime, LocalDateTime endTime) {
         return ldt.compareTo(startTime) >= 0 && ldt.compareTo(endTime) <= 0;
+    }
+
+    public static LocalDate parseLocalDate(@Nullable String str) {
+        return StringUtils.isEmpty(str) ? null : LocalDate.parse(str);
+    }
+
+    public static LocalTime parseLocalTime(@Nullable String str) {
+        return StringUtils.isEmpty(str) ? null : LocalTime.parse(str);
     }
 
     public static String toString(LocalDateTime ldt) {
